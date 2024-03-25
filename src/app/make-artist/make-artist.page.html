@@ -1,0 +1,40 @@
+<ion-header>
+	  <ion-toolbar class="ios hydrated">
+		      <ion-title class="ios title-ios hydrated">Artist</ion-title>
+		        </ion-toolbar>
+</ion-header>
+<ion-content>
+	  <ion-list lines="full">
+		      <form [formGroup]="artistForm" (ngSubmit)="formSubmit()">
+			            <ion-item>
+					            <ion-label position="floating">Name</ion-label>
+						            <ion-input formControlName="name" type="text" required></ion-input>
+							          </ion-item>
+																					        <ion-row>
+																							        <ion-col>
+																									          <ion-button type="submit" color="primary" shape="full" expand="block">AJouter 1 Artist</ion-button>
+																										          </ion-col>
+																											        </ion-row>
+																												    </form>
+																												      </ion-list>
+																												        <ion-list class="ios list-ios hydrated">
+																														    <ion-list-header class="ios hydrated">
+																															          Artists
+																																      </ion-list-header>
+																																          <ion-item *ngFor="let artist of Artists" class="user-list">
+																																		        <ion-label>
+																																				        <h5>
+																																						          <ion-icon name="person"></ion-icon> {{artist.name}}
+																																							          </h5>
+																																											          </ion-label>
+																																												        <div class="item-note" item-end>
+																																														        <button ion-button clear [routerLink]="['/tabs/edit-artist/', artist.$key]">
+																																																          <ion-icon name="create" style="zoom:2.0"></ion-icon>
+																																																	          </button>
+																																																		          <button ion-button clear (click)="deleteArtist(artist.$key)">
+																																																				            <ion-icon name="trash" style="zoom:2.0"></ion-icon>
+																																																					            </button>
+																																																						          </div>
+																																																							      </ion-item>
+																																																							        </ion-list>
+</ion-content>

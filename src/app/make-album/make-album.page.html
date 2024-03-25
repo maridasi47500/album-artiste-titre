@@ -1,0 +1,43 @@
+<ion-header>
+	  <ion-toolbar class="ios hydrated">
+		      <ion-title class="ios title-ios hydrated">Album</ion-title>
+		        </ion-toolbar>
+</ion-header>
+<ion-content>
+	  <ion-list lines="full">
+		      <form [formGroup]="albumForm" (ngSubmit)="formSubmit()">
+			            <ion-item>
+					            <ion-label position="floating">Name</ion-label>
+						            <ion-input formControlName="name" type="text" required></ion-input>
+							          </ion-item>
+																					        <ion-row>
+																							        <ion-col>
+																																      <p>{{ message }}</p>
+																																                                                                                  <ion-button id="open-modal" (click)="openModal()" expand="block">Sélectionner des titres</ion-button>
+																									          <ion-button type="submit" color="primary" shape="full" expand="block">AJouter 1 Album</ion-button>
+																										          </ion-col>
+																											        </ion-row>
+																												    </form>
+																												      </ion-list>
+																												        <ion-list class="ios list-ios hydrated">
+																														    <ion-list-header class="ios hydrated">
+																															          Albums
+																																      </ion-list-header>
+
+																																          <ion-item *ngFor="let album of Albums" class="user-list">
+																																		        <ion-label>
+																																				        <h5>
+																																						          <ion-icon name="person"></ion-icon> {{album.name}}
+																																							          </h5>
+																																											          </ion-label>
+																																												        <div class="item-note" item-end>
+																																														        <button ion-button clear [routerLink]="['/tabs/edit-album/', album.$key]">
+																																																          <ion-icon name="create" style="zoom:2.0"></ion-icon>
+																																																	          </button>
+																																																		          <button ion-button clear (click)="deleteAlbum(album.$key)">
+																																																				            <ion-icon name="trash" style="zoom:2.0"></ion-icon>
+																																																					            </button>
+																																																						          </div>
+																																																							      </ion-item>
+																																																							        </ion-list>
+</ion-content>
