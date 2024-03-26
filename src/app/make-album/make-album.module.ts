@@ -9,6 +9,8 @@ import { MakeAlbumPageRoutingModule } from './make-album-routing.module';
 import { MakeAlbumPage } from './make-album.page';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { TypeaheadComponent } from './../typeahead.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,6 +19,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     MakeAlbumPageRoutingModule
   ],
-  declarations: [MakeAlbumPage]
+  declarations: [MakeAlbumPage,TypeaheadComponent]
 })
 export class MakeAlbumPageModule {}

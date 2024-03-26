@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+			        <ion-buttons slot="start">
+					          <ion-back-button>
+
+
+						  </ion-back-button>
+						   <button ion-button clear (click)="back()">
+
+
+							  <ion-icon name="chevron-back-outline">
+
+							  </ion-icon>
+
+
+									                       </button>
+						          </ion-buttons>
+    <ion-title>voir-album</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header >
+    <ion-toolbar>
+	    <ion-title size="large">{{monalbum.name}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list>
+	    <ion-item *ngFor="let titre of titres">
+		    <ion-label>
+
+			    {{titre.artistname}} - 
+			    {{titre.name}}
+		        </ion-label>
+	    </ion-item>
+  </ion-list>
+</ion-content>

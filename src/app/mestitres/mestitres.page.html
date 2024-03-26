@@ -20,8 +20,24 @@
     <ion-toolbar>
       <ion-title size="large">ajouter mes titres</ion-title>
     </ion-toolbar>
-    <ion-item>
-    <ion-searchbar placeholder="Filtrer des titres à ajouter dans cet album"></ion-searchbar>
-    </ion-item>
+	       <ion-list [inset]="true">
+		           <ion-item [button]="true" [detail]="false" id="select-fruits">
+				         <ion-label>Titres que vous avez choisis</ion-label>
+					       <div slot="end" id="selected-fruits">{{ selectedFruitsText }}</div>
+					           </ion-item>
+							         </ion-list>
+
+	      <ion-modal trigger="select-fruits" #modalfruit>
+		        <ng-template>
+				    <app-typeahead
+						          class="ion-page"
+							        title="Favorite Fruits"
+								      [items]="Titles"
+								      [selectedItems]="Mestitres"
+								      (selectionChange)="fruitSelectionChanged($event)"
+								      (selectionCancel)="modalfruit.dismiss()"
+								    ></app-typeahead>
+				      </ng-template>
+	      </ion-modal>
 
 </ion-content>

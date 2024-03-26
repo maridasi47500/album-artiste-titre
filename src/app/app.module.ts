@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
  import { ModalExampleComponent } from './modal.component';
  import { MakeTitlePage } from './make-title/make-title.page';
  import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
  @NgModule({
    declarations: [AppComponent],
      imports: [

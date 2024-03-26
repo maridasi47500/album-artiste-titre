@@ -4,7 +4,7 @@
 								                                                                          <ion-buttons slot="start">
 																		                                                                                            <ion-button (click)="cancel()">Cancel</ion-button>
 																													                                                                                                 </ion-buttons>
-																																									                                                                                              <ion-title>Welcome</ion-title>
+																																									                                                                                              <ion-title>Ajouter des titre pour cet album</ion-title>
 																																																				                                                                                                   <ion-buttons slot="end">
 
 																																																																	                 <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
@@ -17,9 +17,25 @@
 
 																																																																														                                                   <ion-content class="ion-padding">
 
-  <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">ajouter mes titres</ion-title>
     </ion-toolbar>
-  </ion-header>
+      <ion-item>
+
+	          <ion-select aria-label="Titre" placeholder="sélectionner toutes les titres qui correspondent" class="titres-selectionne" [multiple]="true">
+			        <ion-select-option value="apples">Apples</ion-select-option>
+				      <ion-select-option value="oranges">Oranges</ion-select-option>
+				            <ion-select-option value="bananas">Bananas</ion-select-option>
+					        </ion-select>
+						  </ion-item>
+    <ion-item>
+    <ion-searchbar placeholder="Filtrer des titres à ajouter dans cet album" class="search-bar-titre"></ion-searchbar>
+    </ion-item>
+	      <ion-list class="search-result-titre">
+		      <ion-item value="{{titre.id}}" *ngFor="let titre of Titles">
+			      <ion-label>{{titre.name}}</ion-label>
+			      <ion-fab (click)="addtitre(titre.id, titre.name)"></ion-fab>
+    </ion-item>
+	      </ion-list>
+
 </ion-content>

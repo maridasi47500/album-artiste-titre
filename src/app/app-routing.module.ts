@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
     {
+	        path: 'voir-album/:id',
+		    loadChildren: () => import('./voir-album/voir-album.module').then( m => m.VoirAlbumPageModule)
+		      },
+    {
 	        path: 'home',
 		    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
 		      },

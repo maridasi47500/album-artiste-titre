@@ -16,6 +16,7 @@ export class TitleService {
 	         createTitle(title: Title) {
 	             return this.titleListRef.push({
 	                   name: title.name,
+	                   artist_id: title.artist_id,
 	                                   });
 	                                     }
 	                                       // Get Single

@@ -13,7 +13,25 @@
 																					        <ion-row>
 																							        <ion-col>
 																																      <p>{{ message }}</p>
-																																                                                                                  <ion-button id="open-modal" (click)="openModal()" expand="block">Sélectionner des titres</ion-button>
+																																      <ion-list [inset]="true">
+																																	                                 <ion-item [button]="true" [detail]="false" id="select-fruits">
+																																						                                          <ion-label>Titres que vous avez choisis</ion-label>
+																																											                                                 <div slot="end" id="selected-fruits">{{ selectedFruitsText }}</div>
+																																																	                                                    </ion-item>
+																																																							                                                                     </ion-list>
+
+																																																															                   <ion-modal trigger="select-fruits" #modalfruit>
+																																																																		                           <ng-template>
+																																																																						                                       <app-typeahead
+																																																																											                                                                 class="ion-page"
+																																																																																			                                                                 title="Favorite Fruits"
+																																																																																											                                                                       [items]="Titles"
+																																																																																																			                                                                             [selectedItems]="Mestitres"
+																																																																																																												                                                                           (selectionChange)="fruitSelectionChanged($event)"
+																																																																																																																					                                                                         (selectionCancel)="modalfruit.dismiss()"
+																																																																																																																														                                                                     ></app-typeahead>
+																																																																										                                             </ng-template>
+																																																																															                   </ion-modal>
 																									          <ion-button type="submit" color="primary" shape="full" expand="block">AJouter 1 Album</ion-button>
 																										          </ion-col>
 																											        </ion-row>
@@ -36,6 +54,9 @@
 																																																	          </button>
 																																																		          <button ion-button clear (click)="deleteAlbum(album.$key)">
 																																																				            <ion-icon name="trash" style="zoom:2.0"></ion-icon>
+																																																					            </button>
+																																																		          <button ion-button clear [routerLink]="['/tabs/voir-album/', album.$key]">
+																																																				            <ion-icon name="disc" style="zoom:2.0"></ion-icon>
 																																																					            </button>
 																																																						          </div>
 																																																							      </ion-item>

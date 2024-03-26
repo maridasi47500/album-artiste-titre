@@ -53,8 +53,11 @@ export class MakeTitlePage implements OnInit {
 					           const { data, role } = await modal.onWillDismiss();
 
 						       if (role === 'confirm') {
-							             this.message = `Hello, ${data}!`;
-								     this.myartistid ='${data}';
+							       this.artistService.getArtist(data).valueChanges().subscribe(res => {
+							             this.message = `artist: ${res.name}!`;
+																	                                                                               });
+
+								     this.myartistid =data;
 
 								       console.log(this.myartistid);
 								         }

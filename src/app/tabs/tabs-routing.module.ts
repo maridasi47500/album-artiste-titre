@@ -40,6 +40,10 @@ const routes: Routes = [
 													      loadChildren: () => import('./../edit-album/edit-album.module').then( m => m.EditAlbumPageModule)
 													        },
 											      {
+												          path: 'voir-album/:id',
+													      loadChildren: () => import('./../voir-album/voir-album.module').then( m => m.VoirAlbumPageModule)
+													        },
+											      {
 												          path: 'edit-title/:id',
 													      loadChildren: () => import('./../edit-title/edit-title.module').then( m => m.EditTitlePageModule)
 													        },

@@ -1,0 +1,31 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { AlbumService } from './../shared/album.service';
+import { Album } from './../shared/album';
+import { AlbumhavetitleService } from './../shared/albumhavetitle.service';
+import { Albumhavetitle } from './../shared/albumhavetitle';
+@Component({
+	  selector: 'app-voir-album',
+	    templateUrl: './voir-album.page.html',
+	      styleUrls: ['./voir-album.page.scss'],
+})
+export class VoirAlbumPage implements OnInit {
+	  voirAlbumForm: FormGroup;
+	  monalbum:Album;
+	  monalbumadestitres:Album;
+	    id: any;
+	      constructor(
+		          private albumService: AlbumService,
+			      private actRoute: ActivatedRoute,
+			          private router: Router,
+				      public fb: FormBuilder
+				        ) {
+						    this.id = this.actRoute.snapshot.paramMap.get('id');
+						        this.albumService.getAlbum(this.id).valueChanges().subscribe(res => {
+								      this.monalbum=res;
+								          });
+									    }
+									      ngOnInit() {
+															      }
+}

@@ -35,7 +35,10 @@ export class EditTitlePage implements OnInit {
 																																															                                                                               if (ev.detail.role === 'confirm') {
 																																																									                                                                                             this.myartistid ='${ev.detail.data}';
 																																																																				                                                                                           console.log(this.myartistid);
-																																																																															                                                                                         this.message = `Hello, ${this.myartistid}!`;
+																																																																															   this.artistService.getArtist(this.myartistid).valueChanges().subscribe(res => {
+																																																																																                                                                        this.message = `artist: ${res.name}!`;
+
+																																																																																									                         });
 																																																																																										                                                                                           }
 																																																																																																					                                                                                               }
 	    async openModal() {
