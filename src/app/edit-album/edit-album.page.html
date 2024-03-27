@@ -12,6 +12,32 @@
 					            <ion-label position="floating">Name</ion-label>
 						            <ion-input formControlName="name" type="text" required></ion-input>
 							          </ion-item>
+								  <ion-list [inset]="true">
+
+									                                                                                                             <ion-item [button]="true" [detail]="false" id="select-fruits">
+
+																							                                                                                                                                                                 <ion-label>Titres que vous avez choisis</ion-label>
+
+
+																																											              <div slot="end" id="selected-fruits">{{ selectedFruitsText }}</div>
+
+
+																																												                                                                      </ion-item>
+																																																															                   <ion-modal trigger="select-fruits" #modalfruit1>
+																																																																		                           <ng-template>
+																																																																						                                       <app-typeahead1
+																																																																											                                                                 class="ion-page"
+																																																																																			                                                                 title="Favorite Fruits"
+																																																																																											                                                                       [items]="Titles"
+																																																																																																			                                                                             [selectedItems]="Mestitres"
+																																																																																																												                                                                           (selectionChange)="fruitSelectionChanged($event)"
+																																																																																																																					                                                                         (selectionCancel)="modalfruit1.dismiss()"
+																																																																																																																														                                                                     ></app-typeahead1>
+																																																																										                                             </ng-template>
+																																																																															                   </ion-modal>
+
+
+																																																				                                                                                                                                       </ion-list>
 																					        <ion-row>
 																							        <ion-col>
 																									          <ion-button type="submit" color="primary" shape="full" expand="block">Update Album</ion-button>

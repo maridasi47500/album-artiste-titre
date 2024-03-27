@@ -8,6 +8,7 @@ import { EditAlbumPageRoutingModule } from './edit-album-routing.module';
 
 import { EditAlbumPage } from './edit-album.page';
 import { ReactiveFormsModule } from '@angular/forms';
+ import { TypeaheadComponent1 } from './../typeahead1.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     EditAlbumPageRoutingModule
   ],
-  declarations: [EditAlbumPage]
+  declarations: [EditAlbumPage,TypeaheadComponent1]
 })
 export class EditAlbumPageModule {}

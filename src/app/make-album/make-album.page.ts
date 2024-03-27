@@ -134,7 +134,7 @@ export class MakeAlbumPage implements OnInit {
 							           this.Albumhavetitles = [];
 								         res.forEach((item) => {
 										         let a: any = item.payload.toJSON();
-											         a['$hey'] = item.key;
+											         a['$key'] = item.key;
 												         this.Albumhavetitles.push(a as Albumhavetitle);
 													 console.log(a);
 													       });

@@ -8,8 +8,8 @@ import { MakeAlbumPageRoutingModule } from './make-album-routing.module';
 
 import { MakeAlbumPage } from './make-album.page';
 import { ReactiveFormsModule } from '@angular/forms';
+ import { TypeaheadComponent } from './../typeahead.component';
 
-import { TypeaheadComponent } from './../typeahead.component';
 
 @NgModule({
   imports: [
