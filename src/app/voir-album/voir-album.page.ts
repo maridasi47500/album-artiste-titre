@@ -17,13 +17,20 @@ import { Artist } from './../shared/artist';
 export class VoirAlbumPage implements OnInit {
 	  voirAlbumForm: FormGroup;
 	  monalbum:Album;
-	  titres:Title[]=[];
+	  titres:Albumhavetitle[]=[];
 	  monalbumadestitres:any=[];
 	  back(){
 		    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
 		   this.router.navigate(['/tabs/make-album']);
 		    });
 	  }
+	  deleteTitle(id: any) {
+		                                                                                                         console.log(id);
+															                                                                                                            if (window.confirm('Do you really want to delete?')) {
+																													                                                                                                                             this.albumhavetitleService.deleteAlbumhavetitle(id);
+								let albumhavetitleRes=this.albumhavetitleService.getAlbumhavetitleList();
+																																												                                                                                                                                  }
+																																																												                                                                                                                                 }
 	    id: any;
 	      constructor(
 		          private albumhavetitleService: AlbumhavetitleService,
@@ -39,29 +46,46 @@ export class VoirAlbumPage implements OnInit {
 									  console.log(res,"album");
 
 								      this.monalbum=res;
-						        this.albumhavetitleService.getAlbumhavetitleList().valueChanges().subscribe(res1 => {
+								let albumhavetitleRes = this.albumhavetitleService.getAlbumhavetitleList();
+								               albumhavetitleRes.snapshotChanges().subscribe((res1) => {
+
 									  console.log(res1,"mon album a ades titres",this.id);
-								var myid="";
-								this.monalbumadestitres=res1.filter(x=>x.album_id === this.id);
-								this.titres=[];
-								for(var i = 0;i<this.monalbumadestitres.length;i++){
+								var myid="",myres:any;
+								//this.monalbumadestitres=res1.filter(x=>x.album_id === this.id);
+								this.monalbumadestitres=[];
+								res1.forEach((item:any) => {
 									//
-									myid=this.monalbumadestitres[i].title_id;
+															     let a: any = item.payload.toJSON();
+															     if (a.album_id === this.id){
+															                                                                                                      a['$key'] = item.key;
+																											                                                                                                               this.monalbumadestitres.push(a as Albumhavetitle);
+
+															     }
+								})
+								//heythere!!!
+								this.monalbumadestitres.map((myres:any) => {
+									console.log(myres,"zertyui");
+									myid=myres.title_id;
 
 									this.titleService.getTitle(myid).valueChanges().subscribe(res2 => {
 									  console.log(res2,"titres");
+										myres["title"]=res2.name;
+									  myres["name"]=res2.name;
 									this.artistService.getArtist(res2.artist_id).valueChanges().subscribe(res3 => {
-										res2["artistname"]=res3.name;
-										this.titres.push(res2);
+										myres["artist"]=res3.name;
+										//this.titres.push(myres);
 									});
 										
 
 									});
-								}
+									return myres;
+									});
+									//wow!!!!
 								          });
 								          });
 
 									    }
 									      ngOnInit() {
+						        this.albumService.getAlbum(this.id);
 															      }
 }

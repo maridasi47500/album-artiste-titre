@@ -1,41 +1,81 @@
-	                            
-																																																																										                                       <ion-header>
-<ion-toolbar>
-								                                                                          <ion-buttons slot="start">
-																		                                                                                            <ion-button (click)="cancel()">Cancel</ion-button>
-																													                                                                                                 </ion-buttons>
-																																									                                                                                              <ion-title>Ajouter des titre pour cet album</ion-title>
-																																																				                                                                                                   <ion-buttons slot="end">
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { AlbumService } from './../shared/album.service';
+import { Album } from './../shared/album';
+import { AlbumhavetitleService } from './../shared/albumhavetitle.service';
+import { TitleService } from './../shared/title.service';
+import { ArtistService } from './../shared/artist.service';
+import { Albumhavetitle } from './../shared/albumhavetitle';
+import { Title } from './../shared/title';
+import { Artist } from './../shared/artist';
+@Component({
+	  selector: 'app-voir-album',
+	    templateUrl: './voir-album.page.html',
+	      styleUrls: ['./voir-album.page.scss'],
+})
+export class VoirAlbumPage implements OnInit {
+	  voirAlbumForm: FormGroup;
+	  monalbum:Album;
+	  titres:Albumhavetitle[]=[];
+	  monalbumadestitres:any=[];
+	  back(){
+		    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+		   this.router.navigate(['/tabs/make-album']);
+		    });
+	  }
+	  deleteTitle(id: any) {
+		                                                                                                         console.log(id);
+															                                                                                                            if (window.confirm('Do you really want to delete?')) {
+																													                                                                                                                             this.albumhavetitleService.deleteAlbumhavetitle(id);
+																																												                                                                                                                                  }
+																																																												                                                                                                                                 }
+	    id: any;
+	      constructor(
+		          private albumhavetitleService: AlbumhavetitleService,
+		          private albumService: AlbumService,
+		          private artistService: ArtistService,
+		          private titleService: TitleService,
+			      private actRoute: ActivatedRoute,
+			          private router: Router,
+				      public fb: FormBuilder
+				        ) {
+						    this.id = this.actRoute.snapshot.paramMap.get('id');
+						        this.albumService.getAlbum(this.id).valueChanges().subscribe(res => {
+									  console.log(res,"album");
 
-																																																																	                 <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+								      this.monalbum=res;
+								let albumhavetitleRes = this.albumhavetitleService.getAlbumhavetitleList();
+								               albumhavetitleRes.snapshotChanges().subscribe((res1) => {
+															     //let a: any = item.payload.toJSON();
+															                                                                                                      //a['$key'] = item.key;
+																											                                                                                                               //this.Albumhavetitles.push(a as Albumhavetitle);
+									  console.log(res1,"mon album a ades titres",this.id);
+								var myid="",myres:any;
+								//this.monalbumadestitres=res1.filter(x=>x.album_id === this.id);
+								this.titres=[];
+								this.monalbumadestitres.forEach((myres:any) => {
+									//
+									console.log(myres,"zertyui");
+									myid=myres.title_id;
 
-																																																																			                         </ion-buttons>
+									this.titleService.getTitle(myid).valueChanges().subscribe(res2 => {
+									  console.log(res2,"titres");
+										myres["title"]=res2.name;
+									  myres["name"]=res2.name;
+									this.artistService.getArtist(res2.artist_id).valueChanges().subscribe(res3 => {
+										myres["artist"]=res3.name;
+										this.titres.push(myres);
+									});
+										
 
-																																																																						                                 </ion-toolbar>
+									});
+								})
+								          });
+								          });
 
-																																																																										                                       </ion-header>
-
-																																																																														                                                   <ion-content class="ion-padding">
-
-    <ion-toolbar>
-      <ion-title size="large">ajouter mes titres</ion-title>
-    </ion-toolbar>
-      <ion-item>
-
-	          <ion-select aria-label="Titre" placeholder="sélectionner toutes les titres qui correspondent" class="titres-selectionne" [multiple]="true">
-			        <ion-select-option value="apples">Apples</ion-select-option>
-				      <ion-select-option value="oranges">Oranges</ion-select-option>
-				            <ion-select-option value="bananas">Bananas</ion-select-option>
-					        </ion-select>
-						  </ion-item>
-    <ion-item>
-    <ion-searchbar placeholder="Filtrer des titres à ajouter dans cet album" class="search-bar-titre"></ion-searchbar>
-    </ion-item>
-	      <ion-list class="search-result-titre">
-		      <ion-item value="{{titre.id}}" *ngFor="let titre of Titles">
-			      <ion-label>{{titre.name}}</ion-label>
-			      <ion-fab (click)="addtitre(titre.id, titre.name)"></ion-fab>
-    </ion-item>
-	      </ion-list>
-
-</ion-content>
+									    }
+									      ngOnInit() {
+						        this.albumService.getAlbum(this.id);
+															      }
+}

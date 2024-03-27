@@ -26,12 +26,19 @@
     </ion-toolbar>
   </ion-header>
   <ion-list>
-	    <ion-item *ngFor="let titre of titres">
+	    <ion-item *ngFor="let titre of monalbumadestitres">
 		    <ion-label>
 
-			    {{titre.artistname}} - 
-			    {{titre.name}}
+			    {{titre.artist}} - 
+			    {{titre.title}}
 		        </ion-label>
+			 <button ion-button clear (click)="deleteTitle(titre.$key)">
+
+
+				                                                 <ion-icon name="trash" style="zoom:2.0"></ion-icon>
+
+
+										                                                         </button>
 	    </ion-item>
   </ion-list>
 </ion-content>
