@@ -25,6 +25,10 @@
 	    <ion-title size="large">{{monalbum.name}}</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-img
+		  src="https://firebasestorage.googleapis.com/v0/b/album-cfe29.appspot.com/o/filesStorage%2F{{monalbum.filename}}?alt=media"
+	    alt="image {{monalbum.name}}"
+	      ></ion-img>
   <ion-list>
 	    <ion-item *ngFor="let titre of monalbumadestitres">
 		    <ion-label>
@@ -48,6 +52,8 @@
 										                                                         </button>
 	    </ion-item>
   </ion-list>
+  <ion-item id="Item1">
+  </ion-item>
 </ion-content>
 <figure id="musicContainer" #musicContainer data-fullscreen="false">
 	                                            <audio  id="heythere" preload="metadata" poster="img/poster.jpg" src="https://firebasestorage.googleapis.com/v0/b/accompa-u.appspot.com/o/filesStorage%2F1710935918454_Te%20amare%20%20%20Miguel%20Bose%20y%20Laura%20Pausini.mp4?alt=media" (mute)="mute()" (ended)="ended()" (pause)="pause()" (play)="play()" (volumechange)="checkVolume()"  autoplay="autoplay"  autoplay playsinline style="pointer-events: none;display:{{!videopaused && !videoended ? 'block' : 'none'}};" (loadedmetadata)="loaded()" (timeupdate)="playing()">

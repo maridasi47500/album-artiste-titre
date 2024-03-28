@@ -16,6 +16,7 @@ export class AlbumService {
 	         createAlbum(album: Album) {
 	             return this.albumListRef.push({
 	                   name: album.name,
+	                   filename: album.filename,
 	                                   });
 	                                     }
 	                                       // Get Single

@@ -12,12 +12,46 @@ import { ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Item } from './../types';
+
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+import {
+	  AngularFireStorage,
+	    AngularFireUploadTask,
+} from '@angular/fire/compat/storage';
+import {
+	  AngularFirestore,
+	    AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
+export interface imgFile {
+	  name: string;
+	    filepath: string;
+	      size: number;
+}
 @Component({
 	  selector: 'app-make-album',
 	    templateUrl: './make-album.page.html',
 	      styleUrls: ['./make-album.page.scss'],
 })
 export class MakeAlbumPage implements OnInit {
+	myfilelist:FileList;
+	// File upload task
+	   fileUploadTask: AngularFireUploadTask;
+	     // Upload progress
+	       percentageVal: Observable<any>;
+	         // Track file uploading with snapshot
+	           trackSnapshot: Observable<any>;
+	             // Uploaded File URL
+	               UploadedImageURL: Observable<string>;
+	                 // Uploaded image collection
+	                   files: Observable<imgFile[]>;
+	                     // Image specifications
+	                       imgName: string;
+	                         imgSize: number;
+	                           // File uploading status
+	                             isFileUploading: boolean;
+	                               isFileUploaded: boolean;
+	                                 private filesCollection: AngularFirestoreCollection<imgFile>;
 	 makeid(length:any) {
 		                     var result = '';
 				                             var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -85,13 +119,19 @@ export class MakeAlbumPage implements OnInit {
 	    Albumhavetitles: any = [];
 
 	    constructor(
+		     private afs: AngularFirestore,
+		         private afStorage: AngularFireStorage,
 		        private modalCtrl: ModalController,
 		        private titleService: TitleService,
 		        private albumhavetitleService: AlbumhavetitleService,
 		        private albumService: AlbumService,
 			    private router: Router,
 			        public fb: FormBuilder
-				  ) {}
+				  ) {  this.isFileUploading = false;
+				      this.isFileUploaded = false;
+				      // Define uploaded files collection
+				           this.filesCollection = afs.collection<imgFile>('imagesCollection');
+				               this.files = this.filesCollection.valueChanges();}
 				   fetchAlbums() {
 					       this.titleService
 					             .getTitleList()
@@ -161,7 +201,8 @@ export class MakeAlbumPage implements OnInit {
 													       });
 													           });
 					        this.albumForm = this.fb.group({
-							      name: ['']
+							      name: [''],
+							      filename: ['']
 									      });
 									        }
 										  formSubmit() {
@@ -172,6 +213,7 @@ export class MakeAlbumPage implements OnInit {
 															              .createAlbum(this.albumForm.value)
 																              .then((res) => {
 																		                console.log(res,"album ID ");
+																				this.uploadImage(this.myfilelist);
 																				          this.albumForm.reset();
 																					  var albumid:string=String(res.key);
 																					  var mestitres=this.Mestitres;
@@ -190,4 +232,66 @@ export class MakeAlbumPage implements OnInit {
 																							            .catch((error) => console.log(error));
 																								        }
 																									  }
+uploadMyImage(event: FileList) {
+	this.myfilelist=event;
+	console.log(this.myartistid,this.albumForm.value);
+	    var file: any = event.item(0);
+
+	      this.albumForm.controls['filename'].patchValue(String(new Date().getTime())+"_"+file.name);
+
+}
+  uploadImage(event: FileList) {
+	      const file: any = event.item(0);
+	        // Image validation
+	           if (file.type.split('/')[0] !== 'image') {
+	                 console.log('File type is not supported!');
+	                       return;
+	                           }
+	                               this.isFileUploading = true;
+	                                   this.isFileUploaded = false;
+	                                       this.imgName = file.name;
+	                                           // Storage path
+	                                             const fileStoragePath = 'filesStorage/'+this.albumForm.value.filename;
+	                                                   // Image reference
+	                                                       const imageRef = this.afStorage.ref(fileStoragePath);
+	                                                           // File upload task
+	                                                               this.fileUploadTask = this.afStorage.upload(fileStoragePath, file);
+	                                                                   // Show uploading progress
+	                                                                       this.percentageVal = this.fileUploadTask.percentageChanges();
+	                                                                           this.trackSnapshot = this.fileUploadTask.snapshotChanges().pipe(
+	                                                                                 finalize(() => {
+	                                                                                         // Retreive uploaded image storage path
+	                                                                                                 this.UploadedImageURL = imageRef.getDownloadURL();
+	                                                                                                         this.UploadedImageURL.subscribe(
+	                                                                                                                   (resp) => {
+	                                                                                                                               this.storeFilesFirebase({
+	                                                                                                                                             name: file.name,
+	                                                                                                                                                           filepath: resp,
+	                                                                                                                                                                         size: this.imgSize,
+	                                                                                                                                                                                     });
+	                                                                                                                                                                                                 this.isFileUploading = false;
+	                                                                                                                                                                                                             this.isFileUploaded = true;
+	                                                                                                                                                                                                                       },
+	                                                                                                                                                                                                                                 (error) => {
+	                                                                                                                                                                                                                                             console.log(error);
+	                                                                                                                                                                                                                                                       }
+	                                                                                                                                                                                                                                                               );
+	                                                                                                                                                                                                                                                                     }),
+	                                                                                                                                                                                                                                                                           tap((snap: any) => {
+	                                                                                                                                                                                                                                                                                   this.imgSize = snap.totalBytes;
+	                                                                                                                                                                                                                                                                                         })
+	                                                                                                                                                                                                                                                                                             );
+	                                                                                                                                                                                                                                                                                               }
+	                                                                                                                                                                                                                                                                                                 storeFilesFirebase(image: imgFile) {
+	                                                                                                                                                                                                                                                                                                     const fileId = this.afs.createId();
+	                                                                                                                                                                                                                                                                                                         this.filesCollection
+	                                                                                                                                                                                                                                                                                                               .doc(fileId)
+	                                                                                                                                                                                                                                                                                                                     .set(image)
+	                                                                                                                                                                                                                                                                                                                           .then((res) => {
+	                                                                                                                                                                                                                                                                                                                                   console.log(res);
+	                                                                                                                                                                                                                                                                                                                                         })
+	                                                                                                                                                                                                                                                                                                                                               .catch((err) => {
+	                                                                                                                                                                                                                                                                                                                                                       console.log(err);
+	                                                                                                                                                                                                                                                                                                                                                             });
+	                                                                                                                                                                                                                                                                                                                                                               }
 }

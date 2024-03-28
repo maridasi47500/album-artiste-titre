@@ -9,6 +9,7 @@ import { MakeAlbumPageRoutingModule } from './make-album-routing.module';
 import { MakeAlbumPage } from './make-album.page';
 import { ReactiveFormsModule } from '@angular/forms';
  import { TypeaheadComponent } from './../typeahead.component';
+ import { FormatFileSizePipe } from './format-file-size.pipe';
 
 
 @NgModule({
@@ -19,6 +20,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     IonicModule,
     MakeAlbumPageRoutingModule
   ],
-  declarations: [MakeAlbumPage,TypeaheadComponent]
+  declarations: [MakeAlbumPage,TypeaheadComponent,FormatFileSizePipe]
 })
 export class MakeAlbumPageModule {}
