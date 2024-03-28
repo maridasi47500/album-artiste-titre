@@ -11,12 +11,29 @@ import { ModalExampleComponent } from './../modal.component';
 import { ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+
+import { Observable } from 'rxjs';
+import { finalize, tap } from 'rxjs/operators';
+import {
+	  AngularFireStorage,
+	    AngularFireUploadTask,
+} from '@angular/fire/compat/storage';
+import {
+	  AngularFirestore,
+	    AngularFirestoreCollection,
+} from '@angular/fire/compat/firestore';
+export interface imgFile {
+	  name: string;
+	    filepath: string;
+	      size: number;
+}
 @Component({
 	  selector: 'app-make-title',
 	    templateUrl: './make-title.page.html',
 	      styleUrls: ['./make-title.page.scss'],
 })
 export class MakeTitlePage implements OnInit {
+
 		  @ViewChild(IonModal) modal: IonModal;
 
 		    message = 'This modal example uses triggers to automatically open a modal when the button is clicked.';
