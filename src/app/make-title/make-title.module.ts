@@ -8,6 +8,7 @@ import { MakeTitlePageRoutingModule } from './make-title-routing.module';
 
 import { MakeTitlePage } from './make-title.page';
 import {  ReactiveFormsModule } from '@angular/forms';
+import { FormatFileSizePipe } from './format-file-size.pipe';
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import {  ReactiveFormsModule } from '@angular/forms';
     IonicModule,ReactiveFormsModule, 
     MakeTitlePageRoutingModule
   ],
-  declarations: [MakeTitlePage]
+  declarations: [FormatFileSizePipe, MakeTitlePage]
 })
 export class MakeTitlePageModule {}

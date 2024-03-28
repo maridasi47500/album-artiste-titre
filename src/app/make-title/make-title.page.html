@@ -3,18 +3,40 @@
 		      <ion-title class="ios title-ios hydrated">Title</ion-title>
 		        </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content >
 	 <p>{{ message }}</p>
 									    <ion-button id="open-modal" (click)="openModal()" expand="block">Sélectionner un artiste</ion-button>
 	  <ion-list lines="full">
 		      <form [formGroup]="titleForm" (ngSubmit)="formSubmit()">
 			            <ion-item>
+						            <ion-input formControlName="filename" type="hidden" required></ion-input>
 						            <ion-input formControlName="artist_id" type="hidden" required></ion-input>
 							          </ion-item>
 			            <ion-item>
 					            <ion-label position="floating">Name</ion-label>
 						            <ion-input formControlName="name" type="text" required></ion-input>
 							          </ion-item>
+								  <ion-item>
+									   <ion-card class="ion-text-center" *ngIf="!isFileUploading">
+										       <ion-card-header>
+											             <ion-card-title>Choose Images to Upload</ion-card-title>
+												         </ion-card-header>
+													     <ion-card-content>
+														           <ion-button color="primary" size="medium">
+																           <input type="file" (change)="uploadMyImage($event.target.files)" />
+																	         </ion-button>
+																		     </ion-card-content>
+																		       </ion-card>
+																		         <!-- File upload progress bar -->
+																			   <div *ngIf="percentageVal | async as percentage">
+																				       Progress: {{ percentage | number }}%
+																				           <ion-progress-bar value="{{ percentage / 100 }}"></ion-progress-bar>
+																					     </div>
+																					       <div *ngIf="trackSnapshot | async as snap">
+																						           File size: {{ snap.totalBytes | formatFileSize }} Data transfered: {{
+																							       snap.bytesTransferred | formatFileSize }}
+																							         </div>
+								  </ion-item>
 
 																					        <ion-row>
 																							        <ion-col>
@@ -37,12 +59,41 @@
 																																														        <button ion-button clear [routerLink]="['/tabs/edit-title/', title.$key]">
 																																																          <ion-icon name="create" style="zoom:2.0"></ion-icon>
 																																																	          </button>
+																																																		   <button ion-button clear (click)="playVideo(title.filename)">
+
+
+
+
+
+
+
+
+
+
+
+
+																																																			                                                                                                   <ion-icon name="play" style="zoom:2.0"></ion-icon>
+
+
+
+
+
+
+
+
+
+
+
+
+
+																																																															                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </button>
 																																																		          <button ion-button clear (click)="deleteTitle(title.$key)">
 																																																				            <ion-icon name="trash" style="zoom:2.0"></ion-icon>
 																																																					            </button>
 																																																						          </div>
 																																																							      </ion-item>
 																																																							        </ion-list>
+																																																								<ion-item id="MyIonItem"></ion-item>
 
 
 
@@ -51,3 +102,41 @@
 
 
 </ion-content>
+
+<figure id="musiqueContainer" #musiqueContainer data-fullscreen="false">
+	                                            <audio  id="heythere" preload="metadata" poster="img/poster.jpg" src="https://firebasestorage.googleapis.com/v0/b/accompa-u.appspot.com/o/filesStorage%2F1710935918454_Te%20amare%20%20%20Miguel%20Bose%20y%20Laura%20Pausini.mp4?alt=media" (mute)="mute()" (ended)="ended()" (pause)="pause()" (play)="play()" (volumechange)="checkVolume()"  autoplay="autoplay"  autoplay playsinline style="pointer-events: none;display:{{!videopaused && !videoended ? 'block' : 'none'}};" (loadedmetadata)="loaded()" (timeupdate)="playing()">
+							                                                            </audio>
+														    <div id="video-controls" class="controls" attr.data-state="{{dataState}}">
+															                                                        <button id="playpause" type="button" attr.data-state="{{dataStatePlay}}" (click)="playpause()">Play/Pause</button>
+																						                                                                                                    <button id="stop" type="button" attr.data-state="stop" (click)="stop()">Stop</button>
+																																		                                                                                                                                                          <div class="progress">
+
+																																																						                            <progress id="progress" value="{{progressValue}}" min="0" max="{{maxProgress}}" (click)="myprogress($event)">
+
+																																																										                                                                                                                  <span id="progress-bar"></span>
+
+
+																																																									    </progress>
+
+
+																																																									                                                                                      </div>
+
+
+																																																																			                                                                                                                                                                          <button id="mute" type="button" attr.data-state="{{dataStateMute}}" (click)="muteOk()">Mute/Unmute</button>
+
+
+
+																																																																																								                                                                                                                                                                        <button id="volinc" type="button" attr.data-state="volup" (click)="volinc()">Vol+</button>
+
+
+
+																																																																																																													                                                                                                                                                                          <button id="voldec" type="button" attr.data-state="voldown" (click)="voldown()">Vol-</button>
+
+
+
+																																																																																																																																		                                                                                                                                                                                  <button id="fs" type="button" attr.data-state="go-fullscreen">Fullscreen</button>
+
+
+
+																																																																																																																																																								                        </div>
+																																																																																																																																																																																		                                                                                            </figure>
